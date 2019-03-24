@@ -1,0 +1,124 @@
+from OpenGL.GL import* #ÝíåÇ ÈÑÓã ÇáãæÏíá
+from OpenGL.GLUT import*    #
+from OpenGL.GLU import *# ÝíåÇ ÍÇÌÇÊ ÌÇåÒå
+import numpy as np
+from math import *
+'''
+
+def Draw_circle (r=.05,xc=0,yc=0):
+    glBegin(GL_POLYGON)
+    for theta in np.arange(0, 2 * pi,.001 ):
+        glColor3f(0,0, 1)
+        x = xc+r * cos(theta)  # áæ ÚÇæÒ ÇÛíÑ ÇáãÑßÒ  åÒæ Úáì ÇßÓ ÇáÒíÇÏå æßÐáß æÇì
+        y = yc+r * sin(theta)
+
+        glVertex(x, y)
+    # glVertex(1, 1)
+    glEnd()
+    '''
+
+
+def myInit():
+
+    glMatrixMode(GL_PROJECTION)
+    glLoadIdentity()
+    gluPerspective(60,1,0.1,30)
+    gluLookAt(8,9,10,
+              0,0,0,
+              0,1,0)
+    glClearColor(0,0,0,1)
+    glClear((GL_COLOR_BUFFER_BIT))
+
+angle=0
+x=0
+forward=True
+def display():
+    glClearColor(1, 1, 1, 1)
+    glClear((GL_COLOR_BUFFER_BIT))
+    global angle
+    global x
+    global forward
+
+    glMatrixMode(GL_MODELVIEW)
+    glLoadIdentity()
+    glTranslate(x,0,0)
+
+#ÇáãßÚÈ Çááì ÝæÞ
+    glColor3f(1, 0, 0)
+    glScale(1,0.25,0.5)
+    glutSolidCube(5)
+
+#ÇáãßÚÈ Çááì ÊÍÊ
+    glColor3f(.7,.7,.7)
+    glLoadIdentity()
+    glTranslate(x,.25*5,0)
+    glScale(0.5,.25,.5)
+    glutSolidCube(5)
+
+
+
+#first wheel
+    glLoadIdentity()
+    glColor3f(0,0,1)
+    glTranslate(2.5+x,-2.5*.25,.5*2.5)
+    glRotate(angle, 0, 0, 1)
+    glutWireTorus(0.15,.5,12,8)
+#second wheel
+    glLoadIdentity()
+    glColor3f(0, 0, 1)
+    glTranslate(2.5+x, -2.5 * .25,- .5 * 2.5)
+    glRotate(angle, 0, 0, 1)
+    glutWireTorus(0.15, .5, 12, 8)
+#third wheel
+    glLoadIdentity()
+    glColor3f(0, 0, 1)
+    glTranslate(-2.5+x, -2.5 * .25, .5 * 2.5)
+    glRotate(angle, 0, 0, 1)
+    glutWireTorus(0.15, .5, 12, 8)
+
+#forth wheel
+    glLoadIdentity()
+    glColor3f(0, 0, 1)
+    glTranslate(-2.5+x, -2.5 * .25, -.5 * 2.5)
+    glRotate(angle,0,0,1)
+    glutWireTorus(0.15, .5, 12, 8)
+
+#first light
+    glColor3f(1,1,0)
+    glLoadIdentity()
+    glTranslate(x+2.5,-.5*2.5*.25,-2.5*.25)
+    glutWireSphere(.25,100,100)
+
+#second light
+
+    glColor3f(1, 1, 0)
+    glLoadIdentity()
+    glTranslate(2.5+x, -.5*2.5*.25, 2.5*.25)
+    glutWireSphere(.25, 100, 100)
+
+
+
+
+    if forward:
+        x+=.05
+        angle -= .1
+        if x>5:
+            forward=False
+    else:
+        x-=.05
+        angle += .1
+        if x<-5:
+            forward=True
+
+
+
+    glFlush()
+glutInit()
+glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB)# áæ ÇÓÊÎÏãÊ
+glutInitWindowSize(500,500)
+glutCreateWindow(b"Moving Car")
+glutDisplayFunc(display)
+myInit()
+glutIdleFunc(display)
+glutMainLoop()
+
